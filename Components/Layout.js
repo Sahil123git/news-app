@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import Head from "next/head";
+
 // import 'bootstrap/dist/css/bootstrap.css';
 
 const Layout = ({ children, title }) => {
