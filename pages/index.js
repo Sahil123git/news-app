@@ -143,13 +143,21 @@ export default function Index({ users }) {
           <u>Our Top Headlines</u>
         </h2>
 
-        <div className="row">
-          {API_input.map((user) => (
-            <div className="col-md-4 p-4" key={user.url}>
-              <NewsItem data={user} />
-            </div>
-          ))}
-        </div>
+        {/*Checking length of input so that we can show no result found */}
+        {API_input?.length > 0 ? (
+          <div className="row">
+            {API_input.map((user) => (
+              <div className="col-md-4 p-4" key={user.url}>
+                <NewsItem data={user} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="empty">
+            <h2>No movies found</h2>
+          </div>
+        )}
+        
       </div>
     </Layout>
   );
