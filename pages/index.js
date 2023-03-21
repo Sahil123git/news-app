@@ -6,12 +6,10 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import img from "../Components/Search1.png";
 
-const API_URL =
-  "https://newsapi.org/v2/top-headlines?country=in&apiKey=42d3d7f7d7194bf686fcf4e231ca2746&category=business";
-const API_CTG =
-  "https://newsapi.org/v2/top-headlines?country=in&apiKey=42d3d7f7d7194bf686fcf4e231ca2746";
+const API_KEY = "968e217f187745ba8bcef3dafa1a32bb";
+const API_URL = `https://newsapi.org/v2/top-headlines?country=in&apiKey=${API_KEY}`;
+
 const API_search = "https://newsapi.org/v2/top-headlines?";
-const API_URL2 = "https://jsonplaceholder.typicode.com/users";
 
 export default function Index({ users }) {
   //API_KEY: 42d3d7f7d7194bf686fcf4e231ca2746
@@ -19,10 +17,10 @@ export default function Index({ users }) {
 
   const [API_input, setAPI_input] = useState(users);
   const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState(users); //here initial value of movies is empty array
+  // const [category, setCategory] = useState(users);
 
   const changeCategory = async (title) => {
-    const response = await axios(`${API_CTG}&category=${title}`);
+    const response = await axios(`${API_URL}&category=${title}`);
 
     // console.log(title);
     // console.log(response.data.articles);
@@ -30,9 +28,7 @@ export default function Index({ users }) {
   };
 
   const searchNews = async (title) => {
-    const response = await axios(
-      `${API_search}q=${title}&apiKey=42d3d7f7d7194bf686fcf4e231ca2746`
-    );
+    const response = await axios(`${API_search}q=${title}&apiKey=${API_KEY}`);
 
     setAPI_input(response.data.articles);
     // const data = await response.json();
@@ -148,7 +144,7 @@ export default function Index({ users }) {
           <div className="row">
             {API_input.map((user) => (
               <div className="col-md-4 p-4" key={user.url}>
-                <NewsItem data={user} />
+                <NewsItem obj={user} />
               </div>
             ))}
           </div>
