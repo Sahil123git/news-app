@@ -154,10 +154,9 @@ export default function Index({ users }) {
           </div>
         ) : (
           <div className="empty">
-            <h2>No movies found</h2>
+            <h2>No news found</h2>
           </div>
         )}
-        
       </div>
     </Layout>
   );
