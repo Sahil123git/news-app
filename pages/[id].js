@@ -12,7 +12,7 @@ const Content = ({ user }) => {
   // Render the component
   return (
     <Layout>
-      <Container>
+      <Container style={{ marginTop: "30px" }}>
         <Row className="justify-content-center mt-3">
           {user ? (
             <Col md={8}>

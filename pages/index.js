@@ -39,7 +39,7 @@ export default function Index({ users }) {
   return (
     <Layout>
       {/*<Category />*/}
-      <div className="container">
+      <div className="container" style={{ marginTop: "30px" }}>
         <div className={CategoryStyle.search}>
           <input
             className={CategoryStyle.search_input}
