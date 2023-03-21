@@ -3,9 +3,10 @@ import { useRouter } from "next/router";
 import img from "../Components/Alternate.png";
 
 const NewsItem = (props) => {
-  const url = `/${props.obj.source.name}`;
+  const url = `/${props.obj.title}`;
   // here using props.obj because in parent file object name is like this obj = {user}
   const router = useRouter();
+
   return (
     <div>
       <div className="card" style={{ width: "20rem" }}>
@@ -26,6 +27,7 @@ const NewsItem = (props) => {
           </p>
           <h5
             onClick={() => {
+              // console.log(url);
               router.push(url);
             }}
             className="btn btn-primary mr-4"

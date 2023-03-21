@@ -1,28 +1,74 @@
-import Layout from "@/Components/Layout";
+// Import required modules and components
 import React from "react";
 import axios from "axios";
+import { Container, Row, Col } from "react-bootstrap";
+import Layout from "@/Components/Layout";
 
+// Set the API key
+const API_KEY = "39808aec033b4ee6beac41d16f5513f0";
+
+// Define the content component
 const Content = ({ user }) => {
+  // Render the component
   return (
     <Layout>
-      <h1>Hii There</h1>
+      <Container>
+        <Row className="justify-content-center mt-3">
+          {user ? (
+            <Col md={8}>
+              <h1>{user.title}</h1>
+              <img src={user.img} className="img-fluid my-4" alt={user.title} />
+              <p
+                className="font-weight-bold"
+                style={{ fontWeight: "400", fontSize: "18px" }}
+              >
+                {user.description}
+              </p>
+            </Col>
+          ) : (
+            <Col md={8}>
+              <h1>No article found</h1>
+            </Col>
+          )}
+        </Row>
+      </Container>
     </Layout>
   );
 };
 
-export default Content;
+// Fetch data from server-side
+export async function getServerSideProps(context) {
+  try {
+    // Call the News API with the given query
+    const response = await axios.get(
+      `https://newsapi.org/v2/top-headlines?country=in&q=${context.query.id}&apiKey=${API_KEY}`
+    );
 
-// export async function getServerSideProps(context) {
-//   try {
-//     const { data } = await axios.get(
-//       `https://newsapi.org/v2/everything?q=health&from=2023-03-19&to=2023-03-19&sortBy=popularity&apiKey=42d3d7f7d7194bf686fcf4e231ca2746/${context.query.id}`
-//     );
-//     return {
-//       props: {
-//         user: data,
-//       },
-//     };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+    // Extract data from the response
+    const data = response.data;
+
+    // Check if data exists and is not empty
+    if (data.articles && data.articles.length > 0) {
+      // Return the user object as props
+      return {
+        props: {
+          user: {
+            title: data.articles[0].title,
+            description: data.articles[0].description,
+            img: data.articles[0].urlToImage,
+          },
+        },
+      };
+    } else {
+      // Return null as user object
+      return { props: { user: null } };
+    }
+  } catch (error) {
+    // Log the error and return null as user object
+    console.error(error);
+    return { props: { user: null } };
+  }
+}
+
+// Export the content component as default
+export default Content;

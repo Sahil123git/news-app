@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import img from "../Components/Search1.png";
 
-const API_KEY = "968e217f187745ba8bcef3dafa1a32bb";
+const API_KEY = "39808aec033b4ee6beac41d16f5513f0";
 const API_URL = `https://newsapi.org/v2/top-headlines?country=in&apiKey=${API_KEY}`;
 
 const API_search = "https://newsapi.org/v2/top-headlines?";
@@ -35,6 +35,7 @@ export default function Index({ users }) {
     // console.log(response.data.articles);
     // console.log(title);
   };
+
   return (
     <Layout>
       {/*<Category />*/}
