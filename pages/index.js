@@ -5,7 +5,8 @@ import CategoryStyle from "../styles/Category.module.css";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import img from "../Components/Search1.png";
-import loading1 from "../Components/Loading.gif";
+import loadingImg from "../Components/giphy1.gif";
+import LoadingComp from "../Components/Loading";
 
 // News API credentials
 const API_KEY = "9cf8457155544353ae854148023da8bb";
@@ -40,9 +41,11 @@ export default function Index({ users }) {
 
   // Function that searches for news articles based on the user's query
   const searchNews = async (title) => {
+    setLoading(true);
     const response = await axios.get(
       `${API_URL}&pageSize=${PageSz}&q=${title}`
     );
+    setLoading(false);
     setCheck(2);
     setAPI_input(response.data.articles);
     setArticlesCnt(response.data.totalResults);
@@ -63,7 +66,9 @@ export default function Index({ users }) {
           ? `${modifiedAPI}&category=${category}&page=${page}`
           : `${modifiedAPI}&q=${searchTerm}&page=${page}`;
     }
+    setLoading(true);
     const response = await axios.get(modifiedAPI);
+    setLoading(false);
     setAPI_input(response.data.articles);
   };
 
@@ -71,7 +76,6 @@ export default function Index({ users }) {
     if (page + 1 > Math.ceil(articleCnt / PageSz)) {
     } else {
       setPage(page + 1);
-      console.log(category);
       let modifiedAPI = `${API_URL}&pageSize=${PageSz}`;
       {
         modifiedAPI =
@@ -79,7 +83,9 @@ export default function Index({ users }) {
             ? `${modifiedAPI}&category=${category}&page=${page + 1}`
             : `${modifiedAPI}&q=${searchTerm}&page=${page + 1}`;
       }
+      setLoading(true);
       const response = await axios.get(modifiedAPI);
+      setLoading(false);
       setAPI_input(response.data.articles);
     }
   };
@@ -180,8 +186,8 @@ export default function Index({ users }) {
         <h2>
           <u>Our Top Headlines</u>
         </h2>
-        {/*{loading && <img src={loading1} />}*/}
         {/*Checking length of input so that we can show no result found */}
+        {loading && <LoadingComp />}
         {API_input?.length > 0 ? (
           <div className="row">
             {!loading &&
@@ -190,8 +196,6 @@ export default function Index({ users }) {
                   <NewsItem obj={user} />
                 </div>
               ))}
-
-            {/* */}
           </div>
         ) : (
           <div className="empty">
