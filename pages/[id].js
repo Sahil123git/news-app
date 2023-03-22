@@ -5,7 +5,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Layout from "@/Components/Layout";
 
 // Set the API key
-const API_KEY = "39808aec033b4ee6beac41d16f5513f0";
+const API_KEY = "9cf8457155544353ae854148023da8bb";
 
 // Define the content component
 const Content = ({ user }) => {
@@ -41,7 +41,7 @@ export async function getServerSideProps(context) {
   try {
     // Call the News API with the given query
     const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=in&q=${context.query.id}&apiKey=${API_KEY}`
+      `https://newsapi.org/v2/top-headlines?country=in&pageSize=1&q=${context.query.id}&apiKey=${API_KEY}`
     );
 
     // Extract data from the response

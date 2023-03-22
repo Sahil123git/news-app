@@ -5,40 +5,88 @@ import CategoryStyle from "../styles/Category.module.css";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import img from "../Components/Search1.png";
+import loading1 from "../Components/Loading.gif";
 
-const API_KEY = "39808aec033b4ee6beac41d16f5513f0";
+// News API credentials
+const API_KEY = "9cf8457155544353ae854148023da8bb";
+const PageSz = 9;
 const API_URL = `https://newsapi.org/v2/top-headlines?country=in&apiKey=${API_KEY}`;
 
-const API_search = "https://newsapi.org/v2/top-headlines?";
-
+// Component that displays news articles and categories
 export default function Index({ users }) {
-  //API_KEY: 42d3d7f7d7194bf686fcf4e231ca2746
-  // const [searchTerm, setSearchTerm] = useState(""); //here initial val is empty string
+  // State variables
+  const [API_input, setAPI_input] = useState(users.articles); // holds the list of news articles
+  const [searchTerm, setSearchTerm] = useState(""); // holds the search query entered by the user
+  const [page, setPage] = useState(1);
+  const [check, setCheck] = useState(1);
+  const [category, setCategory] = useState("");
+  const [articleCnt, setArticlesCnt] = useState(users.articlesCnt);
+  const [loading, setLoading] = useState(false);
 
-  const [API_input, setAPI_input] = useState(users);
-  const [searchTerm, setSearchTerm] = useState("");
-  // const [category, setCategory] = useState(users);
-
+  // Function that changes the news category
   const changeCategory = async (title) => {
-    const response = await axios(`${API_URL}&category=${title}`);
-
-    // console.log(title);
+    setLoading(true);
+    const response = await axios.get(
+      `${API_URL}&pageSize=${PageSz}&category=${title}`
+    );
+    setLoading(false);
     // console.log(response.data.articles);
+    setCategory(title);
+    setCheck(1);
+    setAPI_input(response.data.articles);
+    setArticlesCnt(response.data.totalResults);
+    setPage(1);
+  };
+
+  // Function that searches for news articles based on the user's query
+  const searchNews = async (title) => {
+    const response = await axios.get(
+      `${API_URL}&pageSize=${PageSz}&q=${title}`
+    );
+    setCheck(2);
+    setAPI_input(response.data.articles);
+    setArticlesCnt(response.data.totalResults);
+    setPage(1);
+  };
+
+  //run to check results from API
+  // console.log(users.articlesCnt, "ans");
+  // console.log(users.articles, "ans");
+
+  // JSX code for rendering the component
+  const handlePrevClick = async () => {
+    setPage(page - 1);
+    let modifiedAPI = `${API_URL}&pageSize=${PageSz}`;
+    {
+      modifiedAPI =
+        check == 1
+          ? `${modifiedAPI}&category=${category}&page=${page}`
+          : `${modifiedAPI}&q=${searchTerm}&page=${page}`;
+    }
+    const response = await axios.get(modifiedAPI);
     setAPI_input(response.data.articles);
   };
 
-  const searchNews = async (title) => {
-    const response = await axios(`${API_search}q=${title}&apiKey=${API_KEY}`);
-
-    setAPI_input(response.data.articles);
-    // const data = await response.json();
-    // console.log(response.data.articles);
-    // console.log(title);
+  const handleNextClick = async () => {
+    if (page + 1 > Math.ceil(articleCnt / PageSz)) {
+    } else {
+      setPage(page + 1);
+      console.log(category);
+      let modifiedAPI = `${API_URL}&pageSize=${PageSz}`;
+      {
+        modifiedAPI =
+          check == 1
+            ? `${modifiedAPI}&category=${category}&page=${page + 1}`
+            : `${modifiedAPI}&q=${searchTerm}&page=${page + 1}`;
+      }
+      const response = await axios.get(modifiedAPI);
+      setAPI_input(response.data.articles);
+    }
   };
 
   return (
     <Layout>
-      {/*<Category />*/}
+      {/* Search bar */}
       <div className="container" style={{ marginTop: "30px" }}>
         <div className={CategoryStyle.search}>
           <input
@@ -48,7 +96,6 @@ export default function Index({ users }) {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-
           <Image
             src={img}
             width="27"
@@ -62,6 +109,7 @@ export default function Index({ users }) {
         </div>
       </div>
 
+      {/* Categories */}
       <div>
         <div className={CategoryStyle.space}>
           <h2 className="container">
@@ -72,65 +120,58 @@ export default function Index({ users }) {
           <p
             className={CategoryStyle.shine}
             onClick={(e) => {
-              // console.log(e.target.innerHTML);
-              changeCategory(e.target.innerHTML);
+              changeCategory(e.target.innerHTML.toLowerCase());
             }}
           >
-            general
+            General
           </p>
           <p
             className={CategoryStyle.shine}
             onClick={(e) => {
-              // console.log(e.target.innerHTML);
-              changeCategory(e.target.innerHTML);
+              changeCategory(e.target.innerHTML.toLowerCase());
             }}
           >
-            science
+            Science
           </p>
           <p
             className={CategoryStyle.shine}
             onClick={(e) => {
-              // console.log(e.target.innerHTML);
-              changeCategory(e.target.innerHTML);
+              changeCategory(e.target.innerHTML.toLowerCase());
             }}
           >
-            sports
+            Sports
           </p>
           <p
             className={CategoryStyle.shine}
             onClick={(e) => {
-              // console.log(e.target.innerHTML);
-              changeCategory(e.target.innerHTML);
+              changeCategory(e.target.innerHTML.toLowerCase());
             }}
           >
-            technology
+            Technology
           </p>
           <p
             className={CategoryStyle.shine}
             onClick={(e) => {
-              // console.log(e.target.innerHTML);
-              changeCategory(e.target.innerHTML);
+              changeCategory(e.target.innerHTML.toLowerCase());
             }}
           >
-            business
+            Business
           </p>
           <p
             className={CategoryStyle.shine}
             onClick={(e) => {
-              // console.log(e.target.innerHTML);
-              changeCategory(e.target.innerHTML);
+              changeCategory(e.target.innerHTML.toLowerCase());
             }}
           >
-            entertainment
+            Entertainment
           </p>
           <p
             className={CategoryStyle.shine}
             onClick={(e) => {
-              // console.log(e.target.innerHTML);
-              changeCategory(e.target.innerHTML);
+              changeCategory(e.target.innerHTML.toLowerCase());
             }}
           >
-            health
+            Health
           </p>
         </div>
       </div>
@@ -139,15 +180,18 @@ export default function Index({ users }) {
         <h2>
           <u>Our Top Headlines</u>
         </h2>
-
+        {/*{loading && <img src={loading1} />}*/}
         {/*Checking length of input so that we can show no result found */}
         {API_input?.length > 0 ? (
           <div className="row">
-            {API_input.map((user) => (
-              <div className="col-md-4 p-4" key={user.url}>
-                <NewsItem obj={user} />
-              </div>
-            ))}
+            {!loading &&
+              API_input.map((user) => (
+                <div className="col-md-4 p-4" key={user.url}>
+                  <NewsItem obj={user} />
+                </div>
+              ))}
+
+            {/* */}
           </div>
         ) : (
           <div className="empty">
@@ -155,18 +199,40 @@ export default function Index({ users }) {
           </div>
         )}
       </div>
+
+      <div className="container d-flex justify-content-between p-2">
+        <button
+          type="button"
+          className="btn btn-dark"
+          onClick={handlePrevClick}
+          disabled={page <= 1}
+        >
+          &larr; Prev
+        </button>
+        <button
+          type="button"
+          className="btn btn-dark"
+          disabled={page + 1 > Math.ceil(articleCnt / PageSz)}
+          onClick={handleNextClick}
+        >
+          Next &rarr;
+        </button>
+      </div>
     </Layout>
   );
 }
 
 export async function getStaticProps() {
   try {
-    const { data } = await axios.get(API_URL);
+    const { data } = await axios.get(`${API_URL}&pageSize=${PageSz}`);
     // console.log(data);
     return {
       //here we are using only data from object
       props: {
-        users: data.articles,
+        users: {
+          articles: data.articles,
+          articlesCnt: data.totalResults,
+        },
       },
     };
   } catch (error) {}
