@@ -3,21 +3,15 @@ import React from "react";
 const Footer = () => {
   return (
     <div
-      style={{
-        position: "relative",
-        left: 0,
-        bottom: 0,
-        width: "100%",
-        backgroundColor: "black",
-        color: "white",
-      }}
+      className="fixed-bottom"
+      style={{ backgroundColor: "black", color: "white" }}
     >
-      <h1
+      <h6
         className="text-light text-center p-1"
         style={{ marginBottom: 0, paddingBottom: 0 }}
       >
-        Footer
-      </h1>
+        Copyright © 2009-2023 Newzy.com
+      </h6>
     </div>
   );
 };

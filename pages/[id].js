@@ -13,7 +13,7 @@ const Content = ({ user }) => {
   return (
     <Layout>
       <Container style={{ marginTop: "30px" }}>
-        <Row className="justify-content-center mt-3">
+        <Row className="justify-content-center my-4">
           {user ? (
             <Col md={8}>
               <h1>{user.title}</h1>

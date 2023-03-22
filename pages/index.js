@@ -204,7 +204,7 @@ export default function Index({ users }) {
         )}
       </div>
 
-      <div className="container d-flex justify-content-between p-2">
+      <div className="container d-flex justify-content-between p-5">
         <button
           type="button"
           className="btn btn-dark"
